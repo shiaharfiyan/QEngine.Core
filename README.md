@@ -1,5 +1,5 @@
 # QEngine.Core
-Queue Engine Core is all in one library to run SignalR Messaging Queue and .Net 6.
+Queue Engine Core is all in one library to run SignalR Messaging Queue using .Net 6.
 
 Why .Net? because I love it!
 Why SignalR? because its provide realtime communication between Server and Client.
