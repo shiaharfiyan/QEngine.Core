@@ -1,0 +1,49 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+name: 1.0.0$(Rev:.r)
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore Package
+  inputs:
+    command: 'restore'
+    projects: '.'
+    feedsToUse: 'config'
+    nugetConfigPath: './nuget.config'
+    noCache: true
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '.'
+    arguments: '--no-restore -c Release'
+    workingDirectory: '.'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '.'
+    arguments: '--no-restore -c Release -o $(Build.ArtifactStagingDirectory)'
+    modifyOutputPath: false
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    nobuild: true
+    versioningScheme: 'byBuildNumber'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '5618a7d2-ff33-4713-91a1-03824ce0c863'

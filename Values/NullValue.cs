@@ -1,7 +1,9 @@
-﻿namespace QEngine.Core.Values
+﻿namespace SignalMQ.Core.Values
 {
     public struct NullValue
     {
-        public object Value => "null";
+        public string Name => "Null";
+
+        public string Type => typeof(NullValue).Name;
     }
 }

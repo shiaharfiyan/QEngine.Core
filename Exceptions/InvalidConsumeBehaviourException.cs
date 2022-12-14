@@ -1,13 +1,13 @@
-﻿namespace QEngine.Core.Exceptions
+﻿namespace SignalMQ.Core.Exceptions
 {
     public class InvalidConsumeBehaviourException : Exception
     {
-        public InvalidConsumeBehaviourException(QThrottling throttling)
+        public InvalidConsumeBehaviourException(Throttling throttling)
         {
             Throttling = throttling;
         }
 
-        public QThrottling Throttling { get; init; }
+        public Throttling Throttling { get; init; }
 
         public override string Message => $"Invalid throttling '{Throttling}' for consume behaviour. use Block & BlockWithTimeOut instead";
     }

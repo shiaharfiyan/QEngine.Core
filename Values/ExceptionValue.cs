@@ -1,13 +1,16 @@
-﻿namespace QEngine.Core.Values
+﻿namespace SignalMQ.Core.Values
 {
     public struct ExceptionValue
     {
-        public ExceptionValue(string exceptionMsg)
+        public ExceptionValue(Exception exception)
         {
-            Exception = exceptionMsg;
+            Exception = exception.Message;
+            Name = $"Exception.{exception.GetType().Name}";
         }
 
-        public object Value => "Exception";
+        public string Name { get; set; } = "Exception";
         public string Exception { get; set; } = string.Empty;
+
+        public string Type => typeof(ExceptionValue).Name;
     }
 }
