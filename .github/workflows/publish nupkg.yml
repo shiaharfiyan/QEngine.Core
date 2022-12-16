@@ -30,8 +30,8 @@ jobs:
       run: dotnet build -c $BUILD_CONFIG -p:Version=$BUILD_VERSION --no-restore
     - name: Publish
       run: |
-        dotnet publish --no-restore -c $BUILD_CONFIG
-        dotnet pack -o Bin\Release
+        dotnet publish -c $BUILD_CONFIG --no-restore
+        dotnet pack -c $BUILD_CONFIG  --version-suffix $GITHUB_RUN_ID -o Bin\Release
     - uses: NuGet/setup-nuget@v1.0.5
     - name: Push
       run: dotnet nuget push "Bin\Release\*.nupkg"  --api-key ${{ secrets.NUGET_API_KEY_GITHUB }} --source "${{ secrets.NUGET_API_HOST_GITHUB }}"
