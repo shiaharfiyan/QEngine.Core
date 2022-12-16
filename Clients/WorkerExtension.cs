@@ -2,9 +2,9 @@
 
 namespace SignalMQ.Core.Clients
 {
-    public static class QWorkerExtension
+    public static class WorkerExtension
     {
-        public static async Task<bool> DoSendAsync(this IWorker worker, Func<Task<bool>> task)
+        public static async Task<bool> DoSendAsync(this IWorker worker, Func<Task<bool>> task, CancellationTokenSource? token = null)
         {
             int counter = 0;
             while (!worker.IsConnected)
@@ -20,10 +20,7 @@ namespace SignalMQ.Core.Clients
                 }
             }
 
-            var result = await Task.Run(() =>
-            {
-                return task.Invoke();
-            }).WaitAsync(new CancellationToken());
+            var result = await Task.Run(task.Invoke).WaitAsync(token?.Token ?? new CancellationTokenSource().Token);
             return result;
         }
 

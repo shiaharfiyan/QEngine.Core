@@ -17,12 +17,17 @@ namespace SignalMQ.Core.EventArgs
         public delegate void ReconnectedEventHandler(string id, DateTime time);
 
         public delegate void CommittedEventHandler(CommittedEventArgs e);
+        public delegate void CommittedEventHandler<T>(CommittedEventArgs<T> e);
         public delegate void WaitingForCommittedEventHandler(MessageEventArgs e);
+        public delegate void WaitingForCommittedEventHandler<T>(MessageEventArgs<T> e);
 
         public delegate void ReceivedEventHandler(MessageEventArgs e);
+        public delegate void ReceivedEventHandler<T>(MessageEventArgs<T> e);
 
         public delegate void AcknowledgedEventHandler(AcknowledgedEventArgs e);
+        public delegate void AcknowledgedEventHandler<T>(AcknowledgedEventArgs<T> e);
         public delegate void WaitingForAcknowledgedEventHandler(MessageEventArgs e);
+        public delegate void WaitingForAcknowledgedEventHandler<T>(MessageEventArgs<T> e);
 
         public delegate void QueueThrottlingEventHandler(QueueThrottlingEventArgs e);
         public delegate void TimeArrivedEventHandler(DateTime dateTime);

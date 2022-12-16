@@ -25,4 +25,24 @@ namespace SignalMQ.Core.EventArgs
 
         public string CommittedBy { get; init; }
     }
+
+    public class CommittedEventArgs<T>
+    {
+        public CommittedEventArgs(string queueName, Message<T> message,
+            DateTime committedDate, string committedBy)
+        {
+            QueueName = queueName;
+            Message = message;
+            CommittedBy = committedBy;
+            CommittedDate = committedDate;
+        }
+
+        public string QueueName { get; init; }
+
+        public Message<T> Message { get; init; }
+
+        public DateTime CommittedDate { get; init; }
+
+        public string CommittedBy { get; init; }
+    }
 }

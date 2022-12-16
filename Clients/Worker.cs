@@ -6,7 +6,7 @@ using static SignalMQ.Core.EventArgs.QueueEventHandlers;
 
 namespace SignalMQ.Core.Clients
 {
-    public abstract class QWorker : IWorker, IDisposable
+    public abstract class Worker : IWorker, IDisposable
     {
         protected CancellationTokenSource _tokenSource;
 
@@ -25,7 +25,7 @@ namespace SignalMQ.Core.Clients
 
         protected HubConnection _hubConnection;
 
-        public QWorker(ClientType type, string name, IChannel channel)
+        public Worker(ClientType type, string name, IChannel channel)
         {
             Name = name;
             Type = type;
@@ -122,12 +122,12 @@ namespace SignalMQ.Core.Clients
 
         protected virtual void RegisterEvents()
         {
-            if (_hubConnection != null)
-            {
-                _hubConnection.On<string, ClientType>(nameof(IQueueHubEvents.OnIdentified), OnIdentified);
-                _hubConnection.On<string>(nameof(IQueueHubEvents.OnAttached), OnAttached);
-                _hubConnection.On<string>(nameof(IQueueHubEvents.OnDetached), OnDetached);
+            _hubConnection?.On<string, ClientType>(nameof(IQueueHubEvents.OnIdentified), OnIdentified);
+            _hubConnection?.On<string>(nameof(IQueueHubEvents.OnAttached), OnAttached);
+            _hubConnection?.On<string>(nameof(IQueueHubEvents.OnDetached), OnDetached);
 
+            if(_hubConnection != null)
+            {
                 _hubConnection.Closed += OnHubConnectionClosed;
                 _hubConnection.Reconnecting += OnHubConnectionReconnecting;
                 _hubConnection.Reconnected += OnHubConnectionReconnected;
@@ -136,11 +136,11 @@ namespace SignalMQ.Core.Clients
 
         protected virtual void UnregisterEvents()
         {
+            _hubConnection?.Remove(nameof(IQueueHubEvents.OnIdentified));
+            _hubConnection?.Remove(nameof(IQueueHubEvents.OnAttached));
+
             if (_hubConnection != null)
             {
-                _hubConnection.Remove(nameof(IQueueHubEvents.OnIdentified));
-                _hubConnection.Remove(nameof(IQueueHubEvents.OnAttached));
-
                 _hubConnection.Closed -= OnHubConnectionClosed;
                 _hubConnection.Reconnecting -= OnHubConnectionReconnecting;
                 _hubConnection.Reconnected -= OnHubConnectionReconnected;
@@ -164,10 +164,7 @@ namespace SignalMQ.Core.Clients
                     await AttachAsync((cr) => { });
                 }).Wait();
 
-                Task.Run(async () =>
-                {
-                    await SendHealthCheckAsync();
-                }).Wait();
+                Task.Run(SendHealthCheckAsync).Wait();
 
                 _isRequestDone = false;
 

@@ -117,7 +117,7 @@ namespace SignalMQ.Core
 
         public Message ToMessage()
         {
-            return new Message(Id, JsonConvert.SerializeObject(Value), Value == null ? "null" : Value.GetType().Name, Properties);
+            return new Message(Id, JsonConvert.SerializeObject(Value), Value == null ? "null" : (Value.GetType().FullName ?? Value.GetType().Name), Properties);
         }
     }
 }
