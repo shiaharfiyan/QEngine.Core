@@ -27,7 +27,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c $BUILD_CONFIG -p:Version=$BUILD_VERSION --no-restore
+      run: dotnet build .\SignalMQ.Core.csproj -c $BUILD_CONFIG -p:Version=$BUILD_VERSION --no-restore
     - name: Publish
       run: |
         dotnet publish -c $BUILD_CONFIG --no-restore
