@@ -34,4 +34,4 @@ jobs:
       run: dotnet publish --no-restore -c Release
     - uses: NuGet/setup-nuget@v1.0.5
     - name: Push
-      run: dotnet nuget push "**\*.nupkg"  --api-key ${{ secrets.NUGET_API_KEY_GITHUB }} --source "${{ secrets.NUGET_API_HOST_GITHUB }}"
+      run: dotnet nuget push "Bin\Release\*.nupkg"  --api-key ${{ secrets.NUGET_API_KEY_GITHUB }} --source "${{ secrets.NUGET_API_HOST_GITHUB }}"
